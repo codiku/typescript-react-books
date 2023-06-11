@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios"
+import axios from "axios"
 import { FetchQuizParams, FetchQuizResp, QuizItem } from "../types/quiz.type"
 
 const BASE_URL = "https://opentdb.com/api.php"

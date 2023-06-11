@@ -1,6 +1,6 @@
 /* @todo Add a description */
 
 interface Props {}
-export default function QuizSetCategory(p: Props) {
+export function QuizSetCategory(p: Props) {
   return <></>;
 }

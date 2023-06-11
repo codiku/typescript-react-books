@@ -40,7 +40,7 @@ enum QuizType {
 enum Steps {
     SetQtyQuestions,
     SetCategory,
-    Play
+    QuizQuestions
 }
 
 
