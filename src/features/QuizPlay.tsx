@@ -9,6 +9,8 @@ import {
   Radio,
   RadioGroup,
   Text,
+  Box,
+  HStack,
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { shuffleArray } from "../utils";
@@ -21,6 +23,7 @@ interface Props {
   onFinished: () => void;
 }
 export function QuizPlay(p: Props) {
+  const [history, setHistory] = useState<boolean[]>([]);
   const lottieRef = useRef<LottieRefCurrentProps>(null);
   const [currentAnim, setCurrentAnim] = useState<object>();
   const [answer, setAnswer] = useState<string>();
@@ -30,6 +33,22 @@ export function QuizPlay(p: Props) {
   >("unanswered");
   const [availableAnswers, setAvailableAnswers] = useState<string[]>([]);
   const currentQuizItem: QuizItem = p.questions[currentQuizItemIndex];
+  const [windowSize, setWindowSize] = useState([
+    window.innerWidth,
+    window.innerHeight,
+  ]);
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowSize([window.innerWidth, window.innerHeight]);
+    };
+
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
 
   useEffect(() => {
     if (questionStatus == "invalid") {
@@ -44,6 +63,7 @@ export function QuizPlay(p: Props) {
   useEffect(() => {
     if (answer) {
       const isValid = isValidAnswer(answer);
+      setHistory([...history, isValid]);
       setQuestionStatus(isValid ? "valid" : "invalid");
     }
   }, [answer]);
@@ -64,6 +84,27 @@ export function QuizPlay(p: Props) {
     return answer === currentQuizItem.correct_answer;
   };
 
+  const progressBar = () => {
+    return (
+      <HStack mt={50}>
+        {p.questions.map((_, i) => {
+          return (
+            <Box
+              h={5}
+              backgroundColor={
+                i >= currentQuizItemIndex
+                  ? "gray.200"
+                  : history[i] === true
+                  ? "green.300"
+                  : "red.300"
+              }
+              w={50}
+            />
+          );
+        })}
+      </HStack>
+    );
+  };
   const radioList = availableAnswers.map((anwer_, i) => {
     return (
       <GridItem key={i}>
@@ -86,10 +127,11 @@ export function QuizPlay(p: Props) {
   return (
     <>
       <Flex direction={"column"} alignItems={"center"}>
+        {progressBar()}
         <Heading
           as="h1"
           fontSize={"3xl"}
-          mt={200}
+          mt={100}
           mb={20}
           dangerouslySetInnerHTML={{ __html: currentQuizItem.question }}
         />

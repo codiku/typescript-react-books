@@ -86,7 +86,7 @@ export default function App() {
   };
 
   return (
-    <Box px={"60"} py={"10"} h="100%">
+    <Box py={"10"} h="100%">
       {header}
       <Image
         src={BubbleImg}
