@@ -5,17 +5,18 @@ interface Props {
   durationSec: number;
   onFinished: () => void;
 }
+let timer: NodeJS.Timer;
 export const Timer = (p: Props) => {
   const [progress, setProgress] = useState(p.durationSec);
 
   useEffect(() => {
     if (progress <= 0) {
-      console.log("fnish");
       p.onFinished();
+      clearInterval(timer);
     }
   }, [progress]);
+
   useEffect(() => {
-    let timer: NodeJS.Timer;
     timer = setInterval(() => {
       setProgress((prevProgress) => prevProgress - 1);
     }, 1000);

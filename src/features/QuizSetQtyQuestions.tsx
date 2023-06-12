@@ -21,7 +21,7 @@ export function QuizSetQtyQuestions(p: Props) {
           <ChakraSlider
             onChange={setQuestionQty}
             defaultValue={DEFAULT_QTY}
-            min={1}
+            min={5}
             max={30}
             step={5}
           />

@@ -11,7 +11,7 @@ import {
   RadioGroup,
 } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 interface Props {
   categories: QuizCategory[];
