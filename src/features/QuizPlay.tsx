@@ -84,7 +84,7 @@ export function QuizPlay(p: Props) {
           return (
             <Box
               key={i}
-              h={5}
+              h={3}
               backgroundColor={
                 i >= currentQuizItemIndex
                   ? "gray.200"
@@ -92,7 +92,7 @@ export function QuizPlay(p: Props) {
                   ? "green.300"
                   : "red.300"
               }
-              w={50}
+              w={25}
             />
           );
         })}
@@ -120,7 +120,12 @@ export function QuizPlay(p: Props) {
 
   return (
     <>
-      <Flex direction={"column"} alignItems={"center"}>
+      <Flex
+        direction={"column"}
+        alignItems={"center"}
+        justify={"center"}
+        px={5}
+      >
         {progressBar()}
         <Box position={"absolute"} top={50} right={50}>
           {questionStatus === "unanswered" && (

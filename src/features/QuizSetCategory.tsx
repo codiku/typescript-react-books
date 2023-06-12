@@ -9,6 +9,7 @@ import {
   Heading,
   Radio,
   RadioGroup,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { useState } from "react";
@@ -42,9 +43,9 @@ export function QuizSetCategory(p: Props) {
           }}
           value={selectedCategoryId}
         >
-          <Grid mt={"30"} templateColumns="repeat(5, 1fr)" gap={4}>
+          <SimpleGrid columns={[1, 3, 4]} mt={"30"} gap={4}>
             {radioCardList}
-          </Grid>
+          </SimpleGrid>
         </RadioGroup>
       </Flex>
 
