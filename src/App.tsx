@@ -9,7 +9,7 @@ import {
   Steps,
 } from "./types/quiz.type";
 import { Box, Flex, Heading, Image } from "@chakra-ui/react";
-import { QuizSetQtyQuestions } from "./features/QuizSetQtyQuestions";
+import { QuizSetQuestionsQty } from "./features/QuizSetQuestionsQty";
 import { QuizSetCategory } from "./features/QuizSetCategory";
 import { QuizPlay } from "./features/QuizPlay";
 import BubbleImg from "./assets/bubble.png";
@@ -49,7 +49,7 @@ export default function App() {
     switch (step) {
       case Steps.SetQtyQuestions:
         return (
-          <QuizSetQtyQuestions
+          <QuizSetQuestionsQty
             onNext={(qty: number) => {
               setQuizParams({ ...quizParams, amount: qty });
               setStep(Steps.SetCategory);

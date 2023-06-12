@@ -10,7 +10,7 @@ interface Props {
   onNext: (questionQty: number) => void;
 }
 
-export function QuizSetQtyQuestions(p: Props) {
+export function QuizSetQuestionsQty(p: Props) {
   const [questionQty, setQuestionQty] = useState<number>(DEFAULT_QTY);
   return (
     <>
