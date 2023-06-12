@@ -1,8 +1,8 @@
 // Http requests
 interface FetchQuizParams {
     amount: number
-    category: number
-    difficulty: QuizDifficulty
+    category: number | ""
+    difficulty: QuizDifficulty | ""
     type: QuizType
 }
 interface FetchQuizResp {
@@ -15,8 +15,8 @@ interface FetchQuizCatogiesResp {
 // Model
 interface QuizItem {
     category: string;
-    type: string;
-    difficulty: string;
+    type: QuizType;
+    difficulty: QuizDifficulty;
     question: string;
     correct_answer: string;
     incorrect_answers: string[];
@@ -28,6 +28,7 @@ interface QuizCategory {
 }
 
 enum QuizDifficulty {
+    Mixed = "mixed",
     Easy = "easy",
     Medium = "medium",
     Hard = "hard"
@@ -40,9 +41,10 @@ enum QuizType {
 enum Steps {
     SetQtyQuestions,
     SetCategory,
-    QuizQuestions
+    SetDifficulty,
+    Play
 }
 
 
-export type { FetchQuizParams, FetchQuizResp, FetchQuizCatogiesResp, QuizItem, QuizDifficulty, QuizType }
-export { Steps }
+export type { FetchQuizParams, FetchQuizResp, FetchQuizCatogiesResp, QuizItem,QuizCategory  }
+export { Steps, QuizType, QuizDifficulty }

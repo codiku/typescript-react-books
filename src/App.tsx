@@ -1,13 +1,39 @@
-import { useState } from "react";
-import { FetchQuizParams, Steps } from "./types/quiz.type";
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import "../global.css";
+import {
+  FetchQuizParams,
+  QuizCategory,
+  QuizDifficulty,
+  QuizItem,
+  QuizType,
+  Steps,
+} from "./types/quiz.type";
+import { Box, Flex, Heading, Image } from "@chakra-ui/react";
 import { QuizSetQtyQuestions } from "./features/QuizSetQtyQuestions";
 import { QuizSetCategory } from "./features/QuizSetCategory";
-import { QuizQuestion } from "./features/QuizQuestion";
-
+import { QuizPlay } from "./features/QuizPlay";
+import BubbleImg from "./assets/bubble.png";
+import { QuizAPI } from "./api/quiz-api";
+import { QuizSetDifficulty } from "./features/QuizSetDifficulty";
 export default function App() {
-  const [quizParams, setQuizParams] = useState<FetchQuizParams>();
+  const [quizCategories, setQuizCategories] = useState<QuizCategory[]>([]);
+  const [quizParams, setQuizParams] = useState<FetchQuizParams>({
+    amount: 0,
+    category: "",
+    difficulty: QuizDifficulty.Mixed,
+    type: QuizType.Mutiple,
+  });
+  const [quizItems, setQuizItems] = useState<QuizItem[]>([]);
   const [step, setStep] = useState<Steps>(Steps.SetQtyQuestions);
+
+  useEffect(() => {
+    (async () => {
+      setQuizCategories([
+        { id: -1, name: "A bit of everything" },
+        ...(await QuizAPI.fetchQuizCategories()),
+      ]);
+    })();
+  }, []);
 
   const header = (
     <Flex justify="center">
@@ -18,19 +44,57 @@ export default function App() {
   const renderStep = () => {
     switch (step) {
       case Steps.SetQtyQuestions:
-        return <QuizSetQtyQuestions />;
+        return (
+          <QuizSetQtyQuestions
+            onNext={(qty: number) => {
+              setQuizParams({ ...quizParams, amount: qty });
+              setStep(Steps.SetCategory);
+            }}
+          />
+        );
       case Steps.SetCategory:
-        return <QuizSetCategory />;
-      case Steps.QuizQuestions:
-        return <QuizQuestion />;
+        return (
+          <QuizSetCategory
+            onNext={async (categoryId: number) => {
+              setQuizParams({ ...quizParams, category: categoryId });
+              setStep(Steps.SetDifficulty);
+            }}
+            categories={quizCategories}
+          />
+        );
+      case Steps.SetDifficulty:
+        return (
+          <QuizSetDifficulty
+            onNext={async (difficulty: QuizDifficulty) => {
+              const params: FetchQuizParams = {
+                ...quizParams,
+                difficulty:
+                  difficulty === QuizDifficulty.Mixed ? "" : difficulty,
+              };
+              setQuizParams(params);
+              const quizResp = await QuizAPI.fetchQuiz(params);
+              setQuizItems(quizResp);
+              setStep(Steps.Play);
+            }}
+          />
+        );
+      case Steps.Play:
+        return <QuizPlay questions={quizItems} />;
       default:
         return null;
     }
   };
 
   return (
-    <Box p="10">
+    <Box px={"60"} py={"10"} h="100%">
       {header}
+      <Image
+        src={BubbleImg}
+        zIndex={-1}
+        position="absolute"
+        right={-120}
+        top={200}
+      />
       {renderStep()}
     </Box>
   );
