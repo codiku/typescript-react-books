@@ -11,10 +11,11 @@ import {
   RadioGroup,
 } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
-import { useState } from "react";
+import { useRef, useState } from "react";
+
 interface Props {
   categories: QuizCategory[];
-  onNext: (categoryId: number) => void;
+  onNext: (categoryId: string) => void;
 }
 export function QuizSetCategory(p: Props) {
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>(
@@ -49,7 +50,7 @@ export function QuizSetCategory(p: Props) {
 
       <Flex mt={"60"} position={"fixed"} right={150} top={"60%"}>
         <Button
-          onClick={() => p.onNext(Number.parseInt(selectedCategoryId))}
+          onClick={() => p.onNext(selectedCategoryId)}
           rightIcon={<ArrowForwardIcon />}
         >
           Set difficulty

@@ -29,7 +29,7 @@ export default function App() {
   useEffect(() => {
     (async () => {
       setQuizCategories([
-        { id: -1, name: "A bit of everything" },
+        { id: "", name: "A bit of everything" },
         ...(await QuizAPI.fetchQuizCategories()),
       ]);
     })();
@@ -55,7 +55,7 @@ export default function App() {
       case Steps.SetCategory:
         return (
           <QuizSetCategory
-            onNext={async (categoryId: number) => {
+            onNext={async (categoryId: string) => {
               setQuizParams({ ...quizParams, category: categoryId });
               setStep(Steps.SetDifficulty);
             }}
@@ -79,7 +79,7 @@ export default function App() {
           />
         );
       case Steps.Play:
-        return <QuizPlay questions={quizItems} />;
+        return <QuizPlay onFinished={() => ""} questions={quizItems} />;
       default:
         return null;
     }

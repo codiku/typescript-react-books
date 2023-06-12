@@ -1,11 +1,9 @@
 /* @todo Add a description */
 
-import { QuizCategory, QuizDifficulty } from "../types/quiz.type";
+import { QuizDifficulty } from "../types/quiz.type";
 import {
   Button,
   Flex,
-  Grid,
-  GridItem,
   Heading,
   Radio,
   RadioGroup,

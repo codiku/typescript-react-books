@@ -1,20 +1,20 @@
 // Http requests
 interface FetchQuizParams {
     amount: number
-    category: number | ""
+    category: string 
     difficulty: QuizDifficulty | ""
     type: QuizType
 }
 interface FetchQuizResp {
     response_code: number;
-    results: QuizItem[];
+    results: QuizItemResp[];
 }
 interface FetchQuizCatogiesResp {
-    trivia_categories: QuizCategory[];
+    trivia_categories: QuizCategoryResp[];
 }
 // Model
-interface QuizItem {
-    category: string;
+interface QuizItemResp {
+    category: number;
     type: QuizType;
     difficulty: QuizDifficulty;
     question: string;
@@ -22,8 +22,19 @@ interface QuizItem {
     incorrect_answers: string[];
 }
 
-interface QuizCategory {
-    id: number;
+interface QuizItem extends Omit<QuizItemResp, 'category'> {
+    category :  string
+}
+
+
+interface QuizCategoryResp {
+    id: number ;
+    name: string;
+}
+
+
+interface QuizCategory extends Omit<QuizCategoryResp, 'id'>{
+    id: string ;
     name: string;
 }
 
@@ -34,7 +45,7 @@ enum QuizDifficulty {
     Hard = "hard"
 }
 enum QuizType {
-    Mutiple = "mutliple",
+    Mutiple = "multiple",
     Boolean = "boolean"
 }
 
