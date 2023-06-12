@@ -4,7 +4,7 @@ import { ArrowForwardIcon } from "@chakra-ui/icons";
 import ChakraSlider from "../components/Slider";
 import { useState } from "react";
 
-const DEFAULT_QTY = 15;
+const DEFAULT_QTY = 10;
 interface Props {
   onNext: (questionQty: number) => void;
 }
@@ -21,7 +21,7 @@ export function QuizSetQtyQuestions(p: Props) {
           <ChakraSlider
             onChange={setQuestionQty}
             defaultValue={DEFAULT_QTY}
-            min={10}
+            min={1}
             max={30}
             step={5}
           />

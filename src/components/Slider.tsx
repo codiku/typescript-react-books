@@ -38,7 +38,7 @@ const ChakraSlider = (p: Props) => {
   };
   return (
     <Slider
-      minWidth={300}
+      minWidth={400}
       value={value}
       min={p.min}
       max={p.max}

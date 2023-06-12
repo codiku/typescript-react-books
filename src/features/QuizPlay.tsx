@@ -20,7 +20,7 @@ import Lottie, { LottieRefCurrentProps } from "lottie-react";
 
 interface Props {
   questions: QuizItem[];
-  onFinished: () => void;
+  onFinished: (history: boolean[]) => void;
 }
 export function QuizPlay(p: Props) {
   const [history, setHistory] = useState<boolean[]>([]);
@@ -33,30 +33,18 @@ export function QuizPlay(p: Props) {
   >("unanswered");
   const [availableAnswers, setAvailableAnswers] = useState<string[]>([]);
   const currentQuizItem: QuizItem = p.questions[currentQuizItemIndex];
-  const [windowSize, setWindowSize] = useState([
-    window.innerWidth,
-    window.innerHeight,
-  ]);
 
   useEffect(() => {
-    const handleWindowResize = () => {
-      setWindowSize([window.innerWidth, window.innerHeight]);
-    };
-
-    window.addEventListener("resize", handleWindowResize);
-
-    return () => {
-      window.removeEventListener("resize", handleWindowResize);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (questionStatus == "invalid") {
-      setCurrentAnim(invalidAnim);
-    } else if (questionStatus == "valid") {
-      setCurrentAnim(validAnim);
-    } else {
-      setCurrentAnim(undefined);
+    switch (questionStatus) {
+      case "valid":
+        setCurrentAnim(validAnim);
+        break;
+      case "invalid":
+        setCurrentAnim(invalidAnim);
+        break;
+      case "unanswered":
+        setCurrentAnim(undefined);
+        break;
     }
   }, [questionStatus]);
 
@@ -155,7 +143,11 @@ export function QuizPlay(p: Props) {
             animationData={currentAnim}
             loop={false}
             onComplete={() => {
-              nextQuestion();
+              if (currentQuizItemIndex < p.questions.length - 1) {
+                nextQuestion();
+              } else {
+                p.onFinished(history);
+              }
             }}
           />
         )}

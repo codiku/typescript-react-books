@@ -53,7 +53,8 @@ enum Steps {
     SetQtyQuestions,
     SetCategory,
     SetDifficulty,
-    Play
+    Play,
+    Score
 }
 
 

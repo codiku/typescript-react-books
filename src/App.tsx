@@ -15,6 +15,7 @@ import { QuizPlay } from "./features/QuizPlay";
 import BubbleImg from "./assets/bubble.png";
 import { QuizAPI } from "./api/quiz-api";
 import { QuizSetDifficulty } from "./features/QuizSetDifficulty";
+import { QuizScore } from "./features/QuizScore";
 export default function App() {
   const [quizCategories, setQuizCategories] = useState<QuizCategory[]>([]);
   const [quizParams, setQuizParams] = useState<FetchQuizParams>({
@@ -25,6 +26,7 @@ export default function App() {
   });
   const [quizItems, setQuizItems] = useState<QuizItem[]>([]);
   const [step, setStep] = useState<Steps>(Steps.SetQtyQuestions);
+  const [history, setHistory] = useState<boolean[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -79,7 +81,24 @@ export default function App() {
           />
         );
       case Steps.Play:
-        return <QuizPlay onFinished={() => ""} questions={quizItems} />;
+        return (
+          <QuizPlay
+            onFinished={(history: boolean[]) => {
+              setHistory(history);
+              setStep(Steps.Score);
+            }}
+            questions={quizItems}
+          />
+        );
+      case Steps.Score:
+        return (
+          <QuizScore
+            history={history}
+            onNext={() => {
+              setStep(Steps.SetQtyQuestions);
+            }}
+          />
+        );
       default:
         return null;
     }
