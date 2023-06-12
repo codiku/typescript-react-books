@@ -5,6 +5,7 @@ import ChakraSlider from "../components/Slider";
 import { useState } from "react";
 
 const DEFAULT_QTY = 10;
+
 interface Props {
   onNext: (questionQty: number) => void;
 }

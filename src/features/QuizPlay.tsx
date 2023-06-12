@@ -24,7 +24,6 @@ interface Props {
 export function QuizPlay(p: Props) {
   const [history, setHistory] = useState<boolean[]>([]);
   const lottieRef = useRef<LottieRefCurrentProps>(null);
-  const [currentAnim, setCurrentAnim] = useState<object>();
   const [answer, setAnswer] = useState<string>();
   const [currentQuizItemIndex, setCurrentQuizItemIndex] = useState<number>(0);
   const [questionStatus, setQuestionStatus] = useState<
@@ -32,20 +31,6 @@ export function QuizPlay(p: Props) {
   >("unanswered");
   const [availableAnswers, setAvailableAnswers] = useState<string[]>([]);
   const currentQuizItem: QuizItem = p.questions[currentQuizItemIndex];
-
-  useEffect(() => {
-    switch (questionStatus) {
-      case "valid":
-        setCurrentAnim(validAnim);
-        break;
-      case "invalid":
-        setCurrentAnim(invalidAnim);
-        break;
-      case "unanswered":
-        setCurrentAnim(undefined);
-        break;
-    }
-  }, [questionStatus]);
 
   useEffect(() => {
     if (answer) {
@@ -145,11 +130,11 @@ export function QuizPlay(p: Props) {
           {radioList}
         </Grid>
       </RadioGroup>
-      {currentAnim && (
+      {questionStatus !== "unanswered" && (
         <Lottie
           style={{ marginTop: 100, height: 150 }}
           lottieRef={lottieRef}
-          animationData={currentAnim}
+          animationData={questionStatus == "valid" ? validAnim : invalidAnim}
           loop={false}
           onComplete={() => {
             if (currentQuizItemIndex < p.questions.length - 1) {

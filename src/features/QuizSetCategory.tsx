@@ -4,7 +4,6 @@ import { QuizCategory } from "../types/quiz.type";
 import {
   Button,
   Flex,
-  Grid,
   GridItem,
   Heading,
   Radio,

@@ -1,5 +1,3 @@
-/* @todo Add a description */
-
 import { QuizDifficulty } from "../types/quiz.type";
 import {
   Button,

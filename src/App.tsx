@@ -25,6 +25,7 @@ export default function App() {
     difficulty: QuizDifficulty.Mixed,
     type: QuizType.Mutiple,
   });
+
   const [quizItems, setQuizItems] = useState<QuizItem[]>([]);
   const [step, setStep] = useState<Steps>(Steps.SetQtyQuestions);
   const [history, setHistory] = useState<boolean[]>([]);
