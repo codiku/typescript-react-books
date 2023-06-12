@@ -1,4 +1,3 @@
-import {} from "@chakra-ui/icons";
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 
 interface Props {

@@ -22,7 +22,6 @@ interface Props {
   onFinished: (history: boolean[]) => void;
 }
 export function QuizPlay(p: Props) {
-  console.log("in ", p.questions);
   const [history, setHistory] = useState<boolean[]>([]);
   const lottieRef = useRef<LottieRefCurrentProps>(null);
   const [currentAnim, setCurrentAnim] = useState<object>();
@@ -119,55 +118,48 @@ export function QuizPlay(p: Props) {
   });
 
   return (
-    <>
-      <Flex
-        direction={"column"}
-        alignItems={"center"}
-        justify={"center"}
-        px={5}
-      >
-        {progressBar()}
-        <Box position={"absolute"} top={50} right={50}>
-          {questionStatus === "unanswered" && (
-            <Timer durationSec={10} onFinished={() => outOftime()} />
-          )}
-        </Box>
-        <Heading
-          as="h1"
-          fontSize={"3xl"}
-          mt={100}
-          mb={20}
-          dangerouslySetInnerHTML={{ __html: currentQuizItem.question }}
-        />
+    <Flex direction={"column"} alignItems={"center"} justify={"center"} px={5}>
+      {progressBar()}
+      <Box position={"absolute"} top={50} right={50}>
+        {questionStatus === "unanswered" && (
+          <Timer durationSec={10} onFinished={() => outOftime()} />
+        )}
+      </Box>
+      <Heading
+        as="h1"
+        fontSize={"3xl"}
+        mt={100}
+        mb={20}
+        dangerouslySetInnerHTML={{ __html: currentQuizItem.question }}
+      />
 
-        <RadioGroup
-          onChange={(answer) => {
-            if (questionStatus == "unanswered") {
-              setAnswer(answer);
+      <RadioGroup
+        onChange={(answer) => {
+          if (questionStatus == "unanswered") {
+            setAnswer(answer);
+          }
+        }}
+        value={answer}
+      >
+        <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+          {radioList}
+        </Grid>
+      </RadioGroup>
+      {currentAnim && (
+        <Lottie
+          style={{ marginTop: 100, height: 150 }}
+          lottieRef={lottieRef}
+          animationData={currentAnim}
+          loop={false}
+          onComplete={() => {
+            if (currentQuizItemIndex < p.questions.length - 1) {
+              nextQuestion();
+            } else {
+              p.onFinished(history);
             }
           }}
-          value={answer}
-        >
-          <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-            {radioList}
-          </Grid>
-        </RadioGroup>
-        {currentAnim && (
-          <Lottie
-            style={{ marginTop: 100, height: 150 }}
-            lottieRef={lottieRef}
-            animationData={currentAnim}
-            loop={false}
-            onComplete={() => {
-              if (currentQuizItemIndex < p.questions.length - 1) {
-                nextQuestion();
-              } else {
-                p.onFinished(history);
-              }
-            }}
-          />
-        )}
-      </Flex>
-    </>
+        />
+      )}
+    </Flex>
   );
 }
