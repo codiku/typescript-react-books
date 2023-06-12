@@ -17,6 +17,7 @@ import { shuffleArray } from "../utils";
 import invalidAnim from "../assets/lottie/invalid.json";
 import validAnim from "../assets/lottie/valid.json";
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
+import { Timer } from "./Timer";
 
 interface Props {
   questions: QuizItem[];
@@ -68,6 +69,11 @@ export function QuizPlay(p: Props) {
     setQuestionStatus("unanswered");
     setCurrentQuizItemIndex((c) => c + 1);
   }
+
+  function outOftime() {
+    setHistory([...history, false]);
+    setQuestionStatus("invalid");
+  }
   const isValidAnswer = (answer: string): boolean => {
     return answer === currentQuizItem.correct_answer;
   };
@@ -78,6 +84,7 @@ export function QuizPlay(p: Props) {
         {p.questions.map((_, i) => {
           return (
             <Box
+              key={i}
               h={5}
               backgroundColor={
                 i >= currentQuizItemIndex
@@ -116,6 +123,11 @@ export function QuizPlay(p: Props) {
     <>
       <Flex direction={"column"} alignItems={"center"}>
         {progressBar()}
+        <Box position={"absolute"} top={50} right={50}>
+          {questionStatus === "unanswered" && (
+            <Timer durationSec={10} onFinished={() => outOftime()} />
+          )}
+        </Box>
         <Heading
           as="h1"
           fontSize={"3xl"}
