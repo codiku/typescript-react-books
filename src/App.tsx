@@ -16,6 +16,7 @@ import BubbleImg from "./assets/bubble.png";
 import { QuizAPI } from "./api/quiz-api";
 import { QuizSetDifficulty } from "./features/QuizSetDifficulty";
 import { QuizScore } from "./features/QuizScore";
+
 export default function App() {
   const [quizCategories, setQuizCategories] = useState<QuizCategory[]>([]);
   const [quizParams, setQuizParams] = useState<FetchQuizParams>({
@@ -75,8 +76,13 @@ export default function App() {
               };
               setQuizParams(params);
               const quizResp = await QuizAPI.fetchQuiz(params);
-              setQuizItems(quizResp);
-              setStep(Steps.Play);
+              if (quizResp.length === 0) {
+                alert("No quiz found with these parameters, restarting game");
+                setStep(Steps.SetQtyQuestions);
+              } else {
+                setQuizItems(quizResp);
+                setStep(Steps.Play);
+              }
             }}
           />
         );

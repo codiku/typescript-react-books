@@ -1,5 +1,3 @@
-/* @todo Add a description */
-
 import { QuizItem } from "../types/quiz.type";
 import {
   Flex,
@@ -24,6 +22,7 @@ interface Props {
   onFinished: (history: boolean[]) => void;
 }
 export function QuizPlay(p: Props) {
+  console.log("in ", p.questions);
   const [history, setHistory] = useState<boolean[]>([]);
   const lottieRef = useRef<LottieRefCurrentProps>(null);
   const [currentAnim, setCurrentAnim] = useState<object>();
