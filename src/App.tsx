@@ -1,6 +1,7 @@
 import { Box, Flex, Image } from "@chakra-ui/react";
 import logoImg from "./assets/logo.png";
 import bubbleImg from "./assets/bubble.png";
+import "../global.css";
 export function App() {
   const header = (
     <Flex justify="center">
