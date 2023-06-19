@@ -14,6 +14,7 @@ enum Step {
   Play,
   Score,
 }
+
 export function App() {
   const [step, setStep] = useState<Step>(Step.SetQuestionQty);
   const [quizParams, setQuizParams] = useState<FetchQuizParams>({
@@ -32,14 +33,7 @@ export function App() {
   const renderScreenByStep = () => {
     switch (step) {
       case Step.SetQuestionQty:
-        return (
-          <SetQuestionQty
-            onNext={(amount: number) => {
-              setQuizParams({ ...quizParams, amount });
-              setStep(Step.SetQuestionCategory);
-            }}
-          />
-        );
+        return <SetQuestionQty defaultValue={10} max={30} min={5} step={5} />;
       case Step.SetQuestionCategory:
         return <SetQuestionCategory />;
       case Step.SetQuestionDifficulty:
