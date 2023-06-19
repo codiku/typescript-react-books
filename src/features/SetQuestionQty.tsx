@@ -1,3 +1,4 @@
+import { ArrowForwardIcon } from "@chakra-ui/icons";
 import {
   Slider,
   SliderMark,
@@ -6,6 +7,7 @@ import {
   SliderThumb,
   Flex,
   Heading,
+  Button,
 } from "@chakra-ui/react";
 import { useState } from "react";
 
@@ -49,6 +51,16 @@ export function SetQuestionQty(p: {
         </SliderTrack>
         <SliderThumb />
       </Slider>
+      <Button
+        mt={"60"}
+        position={"fixed"}
+        right={150}
+        top={"60%"}
+        onClick={() => ""}
+        rightIcon={<ArrowForwardIcon />}
+      >
+        Set category
+      </Button>
     </Flex>
   );
 }
