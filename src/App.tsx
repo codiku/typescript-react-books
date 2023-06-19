@@ -28,7 +28,6 @@ export function App() {
       <Image h="24" src={logoImg} />
     </Flex>
   );
-  console.log("***", quizParams);
 
   const renderScreenByStep = () => {
     switch (step) {
