@@ -23,7 +23,7 @@ export function App() {
     difficulty: QuizDifficulty.Mixed,
     type: QuizType.Multiple,
   });
-
+  console.log(quizParams);
   const header = (
     <Flex justify="center">
       <Image h="24" src={logoImg} />
@@ -35,17 +35,14 @@ export function App() {
       case Step.SetQuestionQty:
         return (
           <SetQuestionQty
+            onClickNext={(amount: number) => {
+              setQuizParams({ ...quizParams, amount });
+              setStep(Step.SetQuestionCategory);
+            }}
             defaultValue={10}
             max={30}
             min={5}
             step={5}
-            onNext={(amount) => {
-              setQuizParams({
-                ...quizParams,
-                amount,
-              });
-              setStep(Step.SetQuestionCategory);
-            }}
           />
         );
       case Step.SetQuestionCategory:

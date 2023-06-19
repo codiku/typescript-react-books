@@ -16,7 +16,7 @@ export function SetQuestionQty(p: {
   max: number;
   min: number;
   step: number;
-  onNext: (amount: number) => void;
+  onClickNext: (amount: number) => void;
 }) {
   const [sliderValue, setSliderValue] = useState<number>(p.defaultValue);
 
@@ -32,36 +32,37 @@ export function SetQuestionQty(p: {
     return marks;
   };
   return (
-    <Flex direction={"column"} alignItems={"center"}>
-      <Heading as="h1" fontSize="3xl" mb={20}>
-        How many questions ?
-      </Heading>
-      <Slider
-        value={sliderValue}
-        maxW={400}
-        max={p.max}
-        min={p.min}
-        step={p.step}
-        colorScheme="yellow"
-        aria-label="slider-ex-6"
-        onChange={(val) => setSliderValue(val)}
-      >
-        {renderMarks()}
-        <SliderTrack>
-          <SliderFilledTrack />
-        </SliderTrack>
-        <SliderThumb />
-      </Slider>
+    <>
+      <Flex direction={"column"} alignItems={"center"}>
+        <Heading as="h1" fontSize="3xl" mb={20}>
+          How many questions ?
+        </Heading>
+        <Slider
+          value={sliderValue}
+          maxW={400}
+          max={p.max}
+          min={p.min}
+          step={p.step}
+          colorScheme="yellow"
+          aria-label="slider-ex-6"
+          onChange={(val) => setSliderValue(val)}
+        >
+          {renderMarks()}
+          <SliderTrack>
+            <SliderFilledTrack />
+          </SliderTrack>
+          <SliderThumb />
+        </Slider>
+      </Flex>
       <Button
-        mt={"60"}
-        position={"fixed"}
-        right={150}
-        top={"60%"}
-        onClick={() => p.onNext(sliderValue)}
+        onClick={() => p.onClickNext(sliderValue)}
+        position={"absolute"}
+        top={"80%"}
+        right={"10%"}
         rightIcon={<ArrowForwardIcon />}
       >
         Set category
       </Button>
-    </Flex>
+    </>
   );
 }
