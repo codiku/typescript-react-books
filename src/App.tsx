@@ -33,7 +33,21 @@ export function App() {
   const renderScreenByStep = () => {
     switch (step) {
       case Step.SetQuestionQty:
-        return <SetQuestionQty defaultValue={10} max={30} min={5} step={5} />;
+        return (
+          <SetQuestionQty
+            defaultValue={10}
+            max={30}
+            min={5}
+            step={5}
+            onNext={(amount) => {
+              setQuizParams({
+                ...quizParams,
+                amount,
+              });
+              setStep(Step.SetQuestionCategory);
+            }}
+          />
+        );
       case Step.SetQuestionCategory:
         return <SetQuestionCategory />;
       case Step.SetQuestionDifficulty:

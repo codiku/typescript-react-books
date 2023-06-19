@@ -16,6 +16,7 @@ export function SetQuestionQty(p: {
   max: number;
   min: number;
   step: number;
+  onNext: (amount: number) => void;
 }) {
   const [sliderValue, setSliderValue] = useState<number>(p.defaultValue);
 
@@ -56,7 +57,7 @@ export function SetQuestionQty(p: {
         position={"fixed"}
         right={150}
         top={"60%"}
-        onClick={() => ""}
+        onClick={() => p.onNext(sliderValue)}
         rightIcon={<ArrowForwardIcon />}
       >
         Set category
