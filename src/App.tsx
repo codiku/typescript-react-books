@@ -4,8 +4,6 @@ import bubbleImg from "./assets/bubble.png";
 import "../global.css";
 import { useState } from "react";
 import { SetQuestionQty } from "./features/SetQuestionQty";
-import { FetchQuizParams, QuizDifficulty, QuizType } from "./types/quiz-type";
-import { SetQuestionCategory } from "./features/SetQuestionCategory";
 
 enum Step {
   SetQuestionQty,
@@ -17,12 +15,6 @@ enum Step {
 
 export function App() {
   const [step, setStep] = useState<Step>(Step.SetQuestionQty);
-  const [quizParams, setQuizParams] = useState<FetchQuizParams>({
-    amount: 0,
-    category: "",
-    difficulty: QuizDifficulty.Mixed,
-    type: QuizType.Multiple,
-  });
 
   const header = (
     <Flex justify="center">
@@ -35,7 +27,7 @@ export function App() {
       case Step.SetQuestionQty:
         return <SetQuestionQty defaultValue={10} max={30} min={5} step={5} />;
       case Step.SetQuestionCategory:
-        return <SetQuestionCategory />;
+        return <></>;
       case Step.SetQuestionDifficulty:
         return <></>;
       case Step.Play:
