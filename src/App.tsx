@@ -88,14 +88,14 @@ export function App() {
               };
               setQuizParams(params);
               const quizResp = await QuizAPI.fetchQuiz(params);
-              if (quizResp.length === 0) {
+              if (quizResp.length > 0) {
+                setQuiz(quizResp);
+                setStep(Step.Play);
+              } else {
                 alert(
                   `Couldn't find ${params.amount} questions for this category, restarting game`
                 );
                 setStep(Step.SetQuestionQty);
-              } else {
-                setQuiz(quizResp);
-                setStep(Step.Play);
               }
             }}
           />
