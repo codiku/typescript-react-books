@@ -20,8 +20,10 @@ export function SetQuizDifficulty(p: Props) {
 
   const radioList = Object.values(QuizDifficulty).map((diff) => {
     return (
-      <Radio key={diff} value={diff === QuizDifficulty.Mixed ? "" : diff}>
-        <span style={{ textTransform: "capitalize" }}> {diff}</span>
+      <Radio key={diff} value={diff}>
+        <span style={{ textTransform: "capitalize" }}>
+          {diff === QuizDifficulty.Mixed ? "Mixed" : diff}
+        </span>
       </Radio>
     );
   });
