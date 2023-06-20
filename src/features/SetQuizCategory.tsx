@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { QuizCategory } from "../types/quiz-type";
-import { QuizAPI } from "../api/quiz-api";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import {
   Flex,
@@ -11,7 +10,10 @@ import {
   RadioGroup,
 } from "@chakra-ui/react";
 
-export function SetQuestionCategory(p: { categories: QuizCategory[] }) {
+export function SetQuizCategory(p: {
+  categories: QuizCategory[];
+  onClickNext: (categoryId: string) => void;
+}) {
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>(
     p.categories[0].id.toString()
   );
@@ -44,7 +46,7 @@ export function SetQuestionCategory(p: { categories: QuizCategory[] }) {
       </RadioGroup>
 
       <Button
-        onClick={() => ""}
+        onClick={() => p.onClickNext(selectedCategoryId)}
         position={"absolute"}
         top={"80%"}
         right={"10%"}
