@@ -8,11 +8,13 @@ export interface FetchQuizCatogiesResp {
   trivia_categories: QuizCategory[];
 }
 
+export interface FetchQuizCategoriesResp {
+  trivia_categories: QuizCategory[];
+}
 export interface QuizCategory {
-  id: string;
+  id: number;
   name: string;
 }
-
 export enum QuizDifficulty {
   Mixed = "",
   Easy = "easy",
