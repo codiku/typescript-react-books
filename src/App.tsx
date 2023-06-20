@@ -34,7 +34,7 @@ export function App() {
   });
   const [categories, setCategories] = useState<QuizCategory[]>([]);
   const [quiz, setQuiz] = useState<QuizItem[]>([]);
-
+  console.log("***", quizParams);
   useEffect(() => {
     (async () => {
       setCategories([
@@ -82,14 +82,16 @@ export function App() {
         return (
           <SetQuizDifficulty
             onClickNext={async (difficulty: QuizDifficulty) => {
-              setQuizParams({
+              const params = {
                 ...quizParams,
                 difficulty,
-              });
-              setStep(Step.Play);
-              const quizResp = await QuizAPI.fetchQuiz(quizParams);
+              };
+              setQuizParams(params);
+              const quizResp = await QuizAPI.fetchQuiz(params);
               if (quizResp.length === 0) {
-                alert("No quiz found with these parameters, restarting game");
+                alert(
+                  `Couldn't find ${params.amount} questions for this category, restarting game`
+                );
                 setStep(Step.SetQuestionQty);
               } else {
                 setQuiz(quizResp);
