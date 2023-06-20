@@ -78,7 +78,7 @@ export function App() {
       case Step.SetQuestionDifficulty:
         return (
           <SetQuizDifficulty
-            onNext={async (difficulty: QuizDifficulty) => {
+            onClickNext={(difficulty: QuizDifficulty) => {
               setQuizParams({
                 ...quizParams,
                 difficulty,
