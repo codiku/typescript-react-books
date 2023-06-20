@@ -11,7 +11,10 @@ import {
   RadioGroup,
 } from "@chakra-ui/react";
 
-export function SetQuestionCategory(p: { categories: QuizCategory[] }) {
+export function SetQuestionCategory(p: {
+  categories: QuizCategory[];
+  onNext: (categoryId: string) => void;
+}) {
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>(
     p.categories[0].id.toString()
   );
@@ -23,7 +26,6 @@ export function SetQuestionCategory(p: { categories: QuizCategory[] }) {
       </Radio>
     );
   });
-  console.log("***", selectedCategoryId);
   return (
     <>
       <Flex direction={"column"} alignItems={"center"} justify={"center"}>
@@ -44,7 +46,7 @@ export function SetQuestionCategory(p: { categories: QuizCategory[] }) {
       </RadioGroup>
 
       <Button
-        onClick={() => ""}
+        onClick={() => p.onNext(selectedCategoryId)}
         position={"absolute"}
         top={"80%"}
         right={"10%"}

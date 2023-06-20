@@ -12,6 +12,7 @@ import {
 } from "./types/quiz-type";
 import { SetQuestionCategory } from "./features/SetQuestionCategory";
 import { QuizAPI } from "./api/quiz-api";
+import { SetQuizDifficulty } from "./features/SetQuizDifficulty";
 
 enum Step {
   SetQuestionQty,
@@ -30,10 +31,13 @@ export function App() {
     type: QuizType.Multiple,
   });
   const [categories, setCategories] = useState<QuizCategory[]>([]);
-
+  console.log("***", quizParams);
   useEffect(() => {
     (async () => {
-      setCategories(await QuizAPI.fetchCategories());
+      setCategories([
+        { id: -1, name: "Mixed" },
+        ...(await QuizAPI.fetchCategories()),
+      ]);
     })();
   }, []);
 
@@ -59,9 +63,30 @@ export function App() {
           />
         );
       case Step.SetQuestionCategory:
-        return <SetQuestionCategory categories={categories} />;
+        return (
+          <SetQuestionCategory
+            categories={categories}
+            onNext={async (categoryId: string) => {
+              setQuizParams({
+                ...quizParams,
+                category: categoryId == "-1" ? "" : categoryId,
+              });
+              setStep(Step.SetQuestionDifficulty);
+            }}
+          />
+        );
       case Step.SetQuestionDifficulty:
-        return <></>;
+        return (
+          <SetQuizDifficulty
+            onNext={async (difficulty: QuizDifficulty) => {
+              setQuizParams({
+                ...quizParams,
+                difficulty,
+              });
+              setStep(Step.Play);
+            }}
+          />
+        );
       case Step.Play:
         return <></>;
       case Step.Score:

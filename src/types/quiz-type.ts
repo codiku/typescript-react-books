@@ -13,7 +13,7 @@ export interface QuizCategory {
   name: string;
 }
 export enum QuizDifficulty {
-  Mixed = "",
+  Mixed = "mixed",
   Easy = "easy",
   Medium = "medium",
   Hard = "hard",
