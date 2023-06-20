@@ -4,6 +4,14 @@ export interface FetchQuizParams {
   difficulty: QuizDifficulty;
   type: QuizType;
 }
+export interface FetchQuizCatogiesResp {
+  trivia_categories: QuizCategory[];
+}
+
+export interface QuizCategory {
+  id: string;
+  name: string;
+}
 
 export enum QuizDifficulty {
   Mixed = "",
