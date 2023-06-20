@@ -26,6 +26,7 @@ export function SetQuestionCategory(p: {
       </GridItem>
     );
   });
+
   return (
     <>
       <Flex direction={"column"} alignItems={"center"}>
