@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { QuizItem } from "../types/quiz-type";
 import {
+  Box,
   Flex,
+  HStack,
   Heading,
   Radio,
   RadioGroup,
@@ -16,6 +18,7 @@ export function PlayQuiz(p: { quiz: QuizItem[] }) {
   const [answer, setAnswer] = useState<string>();
   const [currentQuizItemIndex, setCurrentQuizItemIndex] = useState<number>(0);
   const currentQuizItem: QuizItem = p.quiz[currentQuizItemIndex];
+  const [history, setHistory] = useState<boolean[]>([]);
   const [questionStatus, setQuestionStatus] = useState<
     "valid" | "invalid" | "unanswered"
   >("unanswered");
@@ -31,12 +34,23 @@ export function PlayQuiz(p: { quiz: QuizItem[] }) {
   }, [currentQuizItemIndex]);
 
   useEffect(() => {
+    setAvailableAnswers(
+      [
+        currentQuizItem.correct_answer,
+        ...currentQuizItem.incorrect_answers,
+      ].sort(() => Math.random() - 0.5)
+    );
+  }, [currentQuizItemIndex]);
+
+  useEffect(() => {
     if (answer) {
-      if (isValidAnswer(answer)) {
+      const isValid = isValidAnswer(answer);
+      if (isValid) {
         setQuestionStatus("valid");
       } else {
         setQuestionStatus("invalid");
       }
+      setHistory([...history, isValid]);
     }
   }, [answer]);
 
@@ -44,24 +58,48 @@ export function PlayQuiz(p: { quiz: QuizItem[] }) {
     return answer === currentQuizItem.correct_answer;
   };
 
-  const radioList = availableAnswers.map((availableAnswer: string, i) => {
+  const progressBar = () => {
+    return (
+      <HStack>
+        {p.quiz.map((_, i) => {
+          return (
+            <Box
+              key={i}
+              h={3}
+              backgroundColor={
+                i >= currentQuizItemIndex
+                  ? "gray.200"
+                  : history[i] === true
+                  ? "green.300"
+                  : "red.300"
+              }
+              w={25}
+            />
+          );
+        })}
+      </HStack>
+    );
+  };
+
+  const radioList = availableAnswers.map((availableAnswer: string) => {
     return (
       <Radio key={availableAnswer} value={availableAnswer}>
         <Text
-          dangerouslySetInnerHTML={{ __html: availableAnswer }}
           color={
-            questionStatus !== "unanswered"
-              ? isValidAnswer(availableAnswer)
-                ? "green.400"
-                : "red.400"
-              : "black"
+            questionStatus === "unanswered"
+              ? "black"
+              : isValidAnswer(availableAnswer)
+              ? "green.400"
+              : "red.400"
           }
+          dangerouslySetInnerHTML={{ __html: availableAnswer }}
         ></Text>
       </Radio>
     );
   });
   return (
     <Flex direction={"column"} alignItems={"center"} justify={"center"}>
+      {progressBar()}
       <Heading
         fontSize={"3xl"}
         mt={100}
@@ -71,7 +109,7 @@ export function PlayQuiz(p: { quiz: QuizItem[] }) {
 
       <RadioGroup
         value={answer}
-        onChange={questionStatus == "unanswered" ? setAnswer : undefined}
+        onChange={questionStatus === "unanswered" ? setAnswer : undefined}
       >
         <SimpleGrid columns={2} spacing={4}>
           {radioList}
