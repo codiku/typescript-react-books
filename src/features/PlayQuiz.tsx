@@ -34,15 +34,6 @@ export function PlayQuiz(p: { quiz: QuizItem[] }) {
   }, [currentQuizItemIndex]);
 
   useEffect(() => {
-    setAvailableAnswers(
-      [
-        currentQuizItem.correct_answer,
-        ...currentQuizItem.incorrect_answers,
-      ].sort(() => Math.random() - 0.5)
-    );
-  }, [currentQuizItemIndex]);
-
-  useEffect(() => {
     if (answer) {
       const isValid = isValidAnswer(answer);
       if (isValid) {
