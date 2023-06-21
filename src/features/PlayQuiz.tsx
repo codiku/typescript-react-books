@@ -32,17 +32,13 @@ export function PlayQuiz(p: { quiz: QuizItem[] }) {
 
   useEffect(() => {
     if (answer) {
-      checkAnswer(answer);
+      if (isValidAnswer(answer)) {
+        setQuestionStatus("valid");
+      } else {
+        setQuestionStatus("invalid");
+      }
     }
   }, [answer]);
-
-  const checkAnswer = (answer: string) => {
-    if (isValidAnswer(answer)) {
-      setQuestionStatus("valid");
-    } else {
-      setQuestionStatus("invalid");
-    }
-  };
 
   const isValidAnswer = (answer: string): boolean => {
     return answer === currentQuizItem.correct_answer;
@@ -51,7 +47,16 @@ export function PlayQuiz(p: { quiz: QuizItem[] }) {
   const radioList = availableAnswers.map((availableAnswer: string, i) => {
     return (
       <Radio key={availableAnswer} value={availableAnswer}>
-        <Text dangerouslySetInnerHTML={{ __html: availableAnswer }}></Text>
+        <Text
+          dangerouslySetInnerHTML={{ __html: availableAnswer }}
+          color={
+            questionStatus !== "unanswered"
+              ? isValidAnswer(availableAnswer)
+                ? "green.400"
+                : "red.400"
+              : "black"
+          }
+        ></Text>
       </Radio>
     );
   });
@@ -64,7 +69,10 @@ export function PlayQuiz(p: { quiz: QuizItem[] }) {
         dangerouslySetInnerHTML={{ __html: currentQuizItem.question }}
       />
 
-      <RadioGroup value={answer} onChange={setAnswer}>
+      <RadioGroup
+        value={answer}
+        onChange={questionStatus == "unanswered" ? setAnswer : undefined}
+      >
         <SimpleGrid columns={2} spacing={4}>
           {radioList}
         </SimpleGrid>
