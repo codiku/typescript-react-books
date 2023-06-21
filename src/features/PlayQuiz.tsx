@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { QuizItem } from "../types/quiz-type";
 import {
   Flex,
@@ -8,16 +8,47 @@ import {
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
+import Lottie from "lottie-react";
+import invalidAnim from "../assets/lottie/invalid.json";
+import validAnim from "../assets/lottie/valid.json";
 
 export function PlayQuiz(p: { quiz: QuizItem[] }) {
+  const [answer, setAnswer] = useState<string>();
   const [currentQuizItemIndex, setCurrentQuizItemIndex] = useState<number>(0);
   const currentQuizItem: QuizItem = p.quiz[currentQuizItemIndex];
-  const availableAnswers: string[] = [
-    currentQuizItem.correct_answer,
-    ...currentQuizItem.incorrect_answers,
-  ];
+  const [questionStatus, setQuestionStatus] = useState<
+    "valid" | "invalid" | "unanswered"
+  >("unanswered");
+  const [availableAnswers, setAvailableAnswers] = useState<string[]>([]);
 
-  const radioList = availableAnswers.map((availableAnswer: string) => {
+  useEffect(() => {
+    setAvailableAnswers(
+      [
+        currentQuizItem.correct_answer,
+        ...currentQuizItem.incorrect_answers,
+      ].sort(() => Math.random() - 0.5)
+    );
+  }, [currentQuizItemIndex]);
+
+  useEffect(() => {
+    if (answer) {
+      checkAnswer(answer);
+    }
+  }, [answer]);
+
+  const checkAnswer = (answer: string) => {
+    if (isValidAnswer(answer)) {
+      setQuestionStatus("valid");
+    } else {
+      setQuestionStatus("invalid");
+    }
+  };
+
+  const isValidAnswer = (answer: string): boolean => {
+    return answer === currentQuizItem.correct_answer;
+  };
+
+  const radioList = availableAnswers.map((availableAnswer: string, i) => {
     return (
       <Radio key={availableAnswer} value={availableAnswer}>
         <Text dangerouslySetInnerHTML={{ __html: availableAnswer }}></Text>
@@ -33,14 +64,26 @@ export function PlayQuiz(p: { quiz: QuizItem[] }) {
         dangerouslySetInnerHTML={{ __html: currentQuizItem.question }}
       />
 
-      <RadioGroup
-        value={""}
-        onChange={() => setCurrentQuizItemIndex(currentQuizItemIndex + 1)}
-      >
+      <RadioGroup value={answer} onChange={setAnswer}>
         <SimpleGrid columns={2} spacing={4}>
           {radioList}
         </SimpleGrid>
       </RadioGroup>
+      <Lottie
+        style={{ marginTop: 100, height: 150 }}
+        animationData={
+          questionStatus === "unanswered"
+            ? null
+            : questionStatus === "valid"
+            ? validAnim
+            : invalidAnim
+        }
+        loop={false}
+        onComplete={() => {
+          setCurrentQuizItemIndex(currentQuizItemIndex + 1);
+          setQuestionStatus("unanswered");
+        }}
+      />
     </Flex>
   );
 }
