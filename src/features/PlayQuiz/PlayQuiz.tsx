@@ -72,10 +72,7 @@ export function PlayQuiz(p: { quiz: QuizItem[] }) {
       </HStack>
     );
   };
-  const failQuestion = () => {
-    setHistory([...history, false]);
-    setQuestionStatus("invalid");
-  };
+
   const radioList = availableAnswers.map((availableAnswer: string) => {
     return (
       <Radio key={availableAnswer} value={availableAnswer}>
