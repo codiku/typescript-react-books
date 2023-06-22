@@ -131,11 +131,9 @@ export function PlayQuiz(p: {
         loop={false}
         onComplete={() => {
           if (currentQuizItemIndex < p.quiz.length - 1) {
-            console.log("go next");
             setCurrentQuizItemIndex(currentQuizItemIndex + 1);
             setQuestionStatus("unanswered");
           } else {
-            console.log("finished");
             p.onFinished(history);
           }
         }}
